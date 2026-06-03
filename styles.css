@@ -865,6 +865,22 @@ nav {
     box-shadow: 0 6px 14px rgba(var(--primary-rgb), 0.25);
 }
 
+/* Global focus-visible ring */
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Tighter radius for pill/circle elements */
+.btn:focus-visible,
+.timeline-toggle:focus-visible,
+.about-tab:focus-visible,
+.theme-toggle:focus-visible,
+.social-links a:focus-visible {
+    border-radius: 50px;
+}
+
 .project-links a:focus-visible,
 .project-image a:focus-visible {
     outline: 2px solid var(--primary);
