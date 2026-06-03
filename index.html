@@ -25,6 +25,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#education">Education</a></li>
+                    <li><a href="#certifications">Certifications</a></li>
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -89,52 +90,39 @@
 
                     <div class="skills">
                         <h3>My Skills</h3>
-                        <div class="skill-item">
-                            <div class="skill-name">
-                                <span>HTML/CSS</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%;"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="skill-item">
-                            <div class="skill-name">
-                                <span>JavaScript</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%;"></div>
+                        <div class="skill-group">
+                            <span class="skill-group-label">Languages</span>
+                            <div class="skill-tags">
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">TypeScript</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">HTML</span>
+                                <span class="skill-tag">CSS</span>
                             </div>
                         </div>
-                        
-                        <div class="skill-item">
-                            <div class="skill-name">
-                                <span>Python</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%;"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="skill-item">
-                            <div class="skill-name">
-                                <span>React</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%;"></div>
+                        <div class="skill-group">
+                            <span class="skill-group-label">Frameworks</span>
+                            <div class="skill-tags">
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">Next.js</span>
+                                <span class="skill-tag">Tailwind CSS</span>
+                                <span class="skill-tag">Node.js</span>
                             </div>
                         </div>
-                        <div class="skill-item">
-                            <div class="skill-name">
-                                <span>TypeScript</span>
-                                <span>85%</span>
+                        <div class="skill-group">
+                            <span class="skill-group-label">Tools</span>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Git</span>
+                                <span class="skill-tag">Vite</span>
+                                <span class="skill-tag">PostgreSQL</span>
+                                <span class="skill-tag">REST APIs</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%;"></div>
+                        </div>
+                        <div class="skill-group">
+                            <span class="skill-group-label">Learning</span>
+                            <div class="skill-tags">
+                                <span class="skill-tag learning">Docker</span>
+                                <span class="skill-tag learning">Testing (Jest/Vitest)</span>
                             </div>
                         </div>
                     </div>
@@ -212,6 +200,38 @@
             </div>
         </div>
     </section>
+    <!-- Certifications Section -->
+    <section class="certifications" id="certifications">
+        <div class="container">
+            <div class="section-title">
+                <h2>Certifications</h2>
+                <p>Industry training &amp; qualifications</p>
+            </div>
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <h3>Penetration Testing Fundamentals</h3>
+                    <div class="cert-meta">
+                        <span class="cert-issuer">Issuing body — placeholder</span>
+                        <span class="cert-year">Year</span>
+                    </div>
+                </div>
+                <div class="cert-card">
+                    <h3>IPC Specialist Modules</h3>
+                    <div class="cert-meta">
+                        <span class="cert-issuer">Issuing body — placeholder</span>
+                        <span class="cert-year">Year</span>
+                    </div>
+                </div>
+                <div class="cert-card">
+                    <h3>ESD Protection Training</h3>
+                    <div class="cert-meta">
+                        <span class="cert-issuer">Issuing body — placeholder</span>
+                        <span class="cert-year">Year</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Projects Section -->
     <section class="projects" id="projects">
         <div class="container">
@@ -223,10 +243,12 @@
             <div class="projects-grid">
                 <div class="project-card">
                     <div class="project-image">
-                        <picture>
-                            <source srcset="e-commerce.webp 1x, e-commerce.webp 2x" type="image/webp">
-                            <img src="e-commerce.webp" alt="Project 1" loading="lazy" decoding="async" width="1910" height="913">
-                        </picture>
+                        <a href="#" target="_blank" rel="noopener"><!-- TODO: Vercel demo URL -->
+                            <picture>
+                                <source srcset="e-commerce.webp 1x, e-commerce.webp 2x" type="image/webp">
+                                <img src="e-commerce.webp" alt="E-commerce Website screenshot" loading="lazy" decoding="async" width="1910" height="913">
+                            </picture>
+                        </a>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">E-commerce Website</h3>
@@ -235,21 +257,30 @@
                             <span class="tech-tag">Node.js</span>
                             <span class="tech-tag">PostgresSQL</span>
                         </div>
-                        <p>A full-stack e-commerce platform with user authentication, product catalog, and payment integration.</p>
+                        <dl class="project-desc">
+                            <div><dt>Problem</dt><dd>Small businesses need a no-fuss storefront with secure checkout.</dd></div>
+                            <div><dt>Built</dt><dd>Full-stack store with auth, product catalog, cart, and Stripe checkout. PostgreSQL + Node API + React front-end.</dd></div>
+                            <div><dt>Status</dt><dd>Live demo (TODO link)</dd></div>
+                        </dl>
                         <div class="project-links">
-                            <a href="https://github.com/alanlisowski/exodus-store" target="_blank">
+                            <a href="https://github.com/alanlisowski/exodus-store" target="_blank" rel="noopener">
                                 <i class="fab fa-github"></i> Code
+                            </a>
+                            <a href="#" target="_blank" rel="noopener" class="btn-demo"><!-- TODO: Vercel demo URL -->
+                                <i class="fas fa-external-link-alt"></i> Live demo
                             </a>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="project-card">
                     <div class="project-image">
-                        <picture>
-                            <source srcset="task.webp 1x, task.webp 2x" type="image/webp">
-                            <img src="task.webp" alt="Project 2" loading="lazy" decoding="async" width="1918" height="916">
-                        </picture>
+                        <a href="#" target="_blank" rel="noopener"><!-- TODO: Vercel demo URL -->
+                            <picture>
+                                <source srcset="task.webp 1x, task.webp 2x" type="image/webp">
+                                <img src="task.webp" alt="Task Management App screenshot" loading="lazy" decoding="async" width="1918" height="916">
+                            </picture>
+                        </a>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Task Management App</h3>
@@ -258,21 +289,30 @@
                             <span class="tech-tag">Tailwind</span>
                             <span class="tech-tag">Vite</span>
                         </div>
-                        <p>A productivity application for managing tasks with drag-and-drop functionality and real-time updates.</p>
+                        <dl class="project-desc">
+                            <div><dt>Problem</dt><dd>To-do apps either hide complexity or drown you in it.</dd></div>
+                            <div><dt>Built</dt><dd>Drag-and-drop kanban board with optimistic updates and local persistence. React + Tailwind + Vite.</dd></div>
+                            <div><dt>Status</dt><dd>Live demo (TODO link)</dd></div>
+                        </dl>
                         <div class="project-links">
-                            <a href="https://github.com/alanlisowski/Task-manager" target="_blank">
+                            <a href="https://github.com/alanlisowski/Task-manager" target="_blank" rel="noopener">
                                 <i class="fab fa-github"></i> Code
+                            </a>
+                            <a href="#" target="_blank" rel="noopener" class="btn-demo"><!-- TODO: Vercel demo URL -->
+                                <i class="fas fa-external-link-alt"></i> Live demo
                             </a>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="project-card">
                     <div class="project-image">
-                        <picture>
-                            <source srcset="pogodynka.webp 1x, pogodynka.webp 2x" type="image/webp">
-                            <img src="pogodynka.webp" alt="Project 3" loading="lazy" decoding="async" width="1897" height="920">
-                        </picture>
+                        <a href="#" target="_blank" rel="noopener"><!-- TODO: Vercel demo URL -->
+                            <picture>
+                                <source srcset="pogodynka.webp 1x, pogodynka.webp 2x" type="image/webp">
+                                <img src="pogodynka.webp" alt="Weather Dashboard screenshot" loading="lazy" decoding="async" width="1897" height="920">
+                            </picture>
+                        </a>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Weather Dashboard</h3>
@@ -281,14 +321,25 @@
                             <span class="tech-tag">CSS</span>
                             <span class="tech-tag">JavaScript</span>
                         </div>
-                        <p>A weather application that displays current and forecasted weather using a third-party API.</p>
+                        <dl class="project-desc">
+                            <div><dt>Problem</dt><dd>Most weather apps show too much or too little.</dd></div>
+                            <div><dt>Built</dt><dd>Current + 7-day forecast UI driven by OpenWeatherMap API, with location search and unit toggle.</dd></div>
+                            <div><dt>Status</dt><dd>Live demo (TODO link)</dd></div>
+                        </dl>
                         <div class="project-links">
-                            <a href="https://github.com/alanlisowski/Weather-app" target="_blank">
+                            <a href="https://github.com/alanlisowski/Weather-app" target="_blank" rel="noopener">
                                 <i class="fab fa-github"></i> Code
+                            </a>
+                            <a href="#" target="_blank" rel="noopener" class="btn-demo"><!-- TODO: Vercel demo URL -->
+                                <i class="fas fa-external-link-alt"></i> Live demo
                             </a>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="projects-more">
+                <a href="https://github.com/alanlisowski" target="_blank" rel="noopener" class="projects-more-link">More on GitHub →</a>
             </div>
         </div>
     </section>
@@ -381,6 +432,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#education">Education</a></li>
+                    <li><a href="#certifications">Certifications</a></li>
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>

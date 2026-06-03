@@ -50,24 +50,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Animate skill bars when they come into view
-const skillBars = document.querySelectorAll('.skill-progress');
-
-function animateSkillBars() {
-    skillBars.forEach(bar => {
-        const rect = bar.getBoundingClientRect();
-        if (rect.top <= window.innerHeight - 100) {
-            bar.style.width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
-        }
-    });
-}
-
-// Run once on page load
-animateSkillBars();
-
-// Run on scroll
-window.addEventListener('scroll', animateSkillBars);
-
 // Animation for timeline items
 const timelineItems = document.querySelectorAll('.timeline-content');
 
