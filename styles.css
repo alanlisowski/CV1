@@ -1073,6 +1073,40 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Scroll-reveal animations */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 400ms ease-out, transform 400ms ease-out;
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+    }
+
+    .reveal-stagger > * {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 400ms ease-out, transform 400ms ease-out;
+    }
+
+    .reveal-stagger.is-visible > * {
+        opacity: 1;
+        transform: none;
+    }
+
+    .reveal-stagger.is-visible > *:nth-child(1) { transition-delay:   0ms; }
+    .reveal-stagger.is-visible > *:nth-child(2) { transition-delay:  50ms; }
+    .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 100ms; }
+    .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 150ms; }
+    .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 200ms; }
+    .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 250ms; }
+    .reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 300ms; }
+    .reveal-stagger.is-visible > *:nth-child(8) { transition-delay: 350ms; }
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {

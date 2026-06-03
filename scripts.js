@@ -68,31 +68,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Animation for timeline items
-const timelineItems = document.querySelectorAll('.timeline-content');
-
-function animateTimelineItems() {
-    timelineItems.forEach(item => {
-        const rect = item.getBoundingClientRect();
-        if (rect.top <= window.innerHeight - 100) {
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0)';
+// Scroll-reveal: single IntersectionObserver for all .reveal and .reveal-stagger elements
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
         }
     });
-}
+}, { threshold: 0.1 });
 
-// Initialize timeline items with hidden state
-timelineItems.forEach(item => {
-    item.style.opacity = '0';
-    item.style.transform = 'translateY(30px)';
-    item.style.transition = 'all 0.5s ease';
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+    revealObserver.observe(el);
 });
-
-// Run once on page load
-animateTimelineItems();
-
-// Run on scroll
-window.addEventListener('scroll', animateTimelineItems);
 
 // About tabs toggle
 const aboutTabs = document.querySelectorAll('[data-about-tab]');
