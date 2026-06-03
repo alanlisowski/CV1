@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!-- OG image design template — 1200×630 px
+     To export:
+       1. Open in browser (file://.../og-preview.html)
+       2. Set browser window to exactly 1200×630 (DevTools > device emulation)
+       3. Screenshot and save as og-image.png in the project root
+     Or paste into Figma / Canva and export as PNG. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 630px;
+    background: linear-gradient(135deg, #252d45 0%, #1a2035 55%, #0f1520 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Left accent bar */
+  body::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    background: #4d7cff;
+  }
+  /* Subtle radial glow */
+  body::after {
+    content: '';
+    position: absolute;
+    top: -200px; left: -200px;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(77, 124, 255, 0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .name {
+    font-size: 80px;
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+  .name span { color: #4d7cff; }
+  .role {
+    font-size: 36px;
+    font-weight: 400;
+    color: #8fa3b3;
+    margin-bottom: 48px;
+  }
+  .url {
+    font-size: 22px;
+    color: rgba(77, 124, 255, 0.75);
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+  <div class="name"><span>Alan</span> Lisowski</div>
+  <div class="role">Front-end Developer</div>
+  <div class="url">cv-beryl-nine-32.vercel.app</div>
+</body>
+</html>
