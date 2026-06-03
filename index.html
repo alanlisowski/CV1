@@ -6,6 +6,9 @@
     <title>Alan Lisowski | Aspiring Programmer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);})();
+    </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
 </head>
@@ -29,6 +32,11 @@
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="resume.pdf" target="_blank" rel="noopener">Résumé</a></li>
                     <li><a href="#contact">Contact</a></li>
+                    <li>
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                            <i class="fas fa-sun" id="themeIcon"></i>
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
