@@ -102,19 +102,19 @@
             
             <div class="about-content">
                 <div class="about-body">
-                    <div class="about-tabs">
-                        <button class="about-tab active" data-about-tab="about">About Me</button>
-                        <button class="about-tab" data-about-tab="personal">Personal Info</button>
+                    <div class="about-tabs" role="tablist" aria-label="About sections">
+                        <button class="about-tab active" role="tab" aria-selected="true" aria-controls="panel-about" id="tab-about" data-about-tab="about">About Me</button>
+                        <button class="about-tab" role="tab" aria-selected="false" aria-controls="panel-personal" id="tab-personal" data-about-tab="personal">Personal Info</button>
                     </div>
 
                     <div class="about-panels">
-                        <div class="about-text about-panel active" data-about-panel="about">
+                        <div class="about-text about-panel active" role="tabpanel" id="panel-about" aria-labelledby="tab-about" data-about-panel="about">
                             <p>I'm a front-end developer specialising in React and TypeScript, with a programming-technician background and hands-on experience from an internship at Intelly and freelance client work.</p>
                             <p>During school I completed several industry courses, including penetration testing fundamentals, multiple IPC Specialist modules, and ESD (electrostatic discharge) protection training — giving me a broader technical foundation than most front-end developers.</p>
                             <p>I'm looking for my first full-time role where I can ship real products, grow fast, and work with a team that cares about quality.</p>
                         </div>
 
-                        <div class="about-text about-panel" data-about-panel="personal">
+                        <div class="about-text about-panel" role="tabpanel" id="panel-personal" aria-labelledby="tab-personal" data-about-panel="personal">
                             <p>Outside of code I stay active through running, swimming, and calisthenics, follow F1 and WRC for the engineering as much as the racing, tinker with AI tools to see what they can actually do, and recharge by traveling and meeting people along the way.</p>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                         <div class="timeline-text timeline-collapse" data-collapse-content="gap-year">
                             <p>The last year has been truly significant for me. I've met many new people who have shown me the world from a completely different perspective. I've worked in places that have taught me some key life lessons and helped me better understand myself. I've also realized the value of my time and what I want to spend it on. I've visited many new places, which has further broadened my perspective on the world.</p>
                         </div>
-                        <button class="timeline-toggle" type="button" data-collapse-toggle="gap-year">Read more</button>
+                        <button class="timeline-toggle" type="button" aria-expanded="false" data-collapse-toggle="gap-year">Read more</button>
                     </div>
                 </div>
 
@@ -432,19 +432,19 @@
                         <input type="text" name="_honey" style="display:none">
 
                         <div class="form-group">
-                            <input type="text" name="name" placeholder="Your Name" required>
+                            <input type="text" name="name" placeholder="Your Name" aria-label="Your name" required>
                         </div>
-                        
+
                         <div class="form-group">
-                            <input type="email" name="email" placeholder="Your Email" required>
+                            <input type="email" name="email" placeholder="Your Email" aria-label="Your email address" required>
                         </div>
-                        
+
                         <div class="form-group">
-                            <input type="text" name="subject" placeholder="Subject">
+                            <input type="text" name="subject" placeholder="Subject" aria-label="Message subject">
                         </div>
-                        
+
                         <div class="form-group">
-                            <textarea name="message" placeholder="Your Message" required></textarea>
+                            <textarea name="message" placeholder="Your Message" aria-label="Your message" required></textarea>
                         </div>
                         
                         <button type="submit" class="btn">Send Message</button>

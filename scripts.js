@@ -5,6 +5,7 @@ const themeIcon = document.getElementById('themeIcon');
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
 }
 
 applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
@@ -30,7 +31,9 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.getElementById('navLinks');
 
 mobileMenuBtn.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
+    const isOpen = navLinks.classList.toggle('active');
+    mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+    mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
 });
 
 // Close mobile menu when clicking on a link
@@ -90,12 +93,16 @@ aboutTabs.forEach(tab => {
     tab.addEventListener('click', () => {
         const target = tab.getAttribute('data-about-tab');
 
-        aboutTabs.forEach(t => t.classList.remove('active'));
-        aboutPanels.forEach(panel => {
-            panel.classList.toggle('active', panel.getAttribute('data-about-panel') === target);
+        aboutTabs.forEach(t => {
+            const active = t === tab;
+            t.classList.toggle('active', active);
+            t.setAttribute('aria-selected', String(active));
         });
-
-        tab.classList.add('active');
+        aboutPanels.forEach(panel => {
+            const active = panel.getAttribute('data-about-panel') === target;
+            panel.classList.toggle('active', active);
+            panel.setAttribute('aria-hidden', String(!active));
+        });
     });
 });
 
@@ -109,7 +116,8 @@ collapseToggles.forEach(btn => {
         if (!content) return;
 
         const expanded = content.classList.toggle('expanded');
-        btn.textContent = expanded ? 'Zobacz mniej' : 'Zobacz więcej';
+        btn.textContent = expanded ? 'Read less' : 'Read more';
+        btn.setAttribute('aria-expanded', String(expanded));
     });
 });
 
