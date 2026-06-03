@@ -28,6 +28,9 @@
     <link rel="icon" type="image/png" href="icon.png" sizes="512x512">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
     <link rel="stylesheet" href="styles.css">
     <script>
         (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);})();
@@ -67,30 +70,58 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <div class="hero-content">
-                <h1><span style="color: var(--primary);">Alan Lisowski</span></h1>
-                <h2>Front-end developer building React &amp; TypeScript apps</h2>
-                <p>Programming-technician graduate from Olsztyn, Poland. Ready for my first full-time role — open to remote, hybrid, or relocation.</p>
-                <a href="#projects" class="btn">View my work</a>
-                <a href="resume.pdf" class="btn" download target="_blank" rel="noopener">Download résumé</a>
-                
-                <div class="social-links">
-                    <a href="https://github.com/alanlisowski" target="_blank" rel="noopener" aria-label="GitHub profile">
-                        <i class="fab fa-github" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/alan-lisowski-3395b739a/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
-                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://wa.me/message/LHPBYF2HQW4XP1" target="_blank" rel="noopener" aria-label="WhatsApp chat">
-                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                    </a>
-                    <a href="mailto:pro4gramista@gmail.com" aria-label="Send email">
-                        <i class="fas fa-envelope" aria-hidden="true"></i>
-                    </a>
+            <a href="#about" class="skip-terminal">Skip terminal</a>
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1><span style="color: var(--primary);">Alan Lisowski</span></h1>
+                    <h2>Front-end developer building React &amp; TypeScript apps</h2>
+                    <p>Programming-technician graduate from Olsztyn, Poland. Ready for my first full-time role — open to remote, hybrid, or relocation.</p>
+                    <a href="#projects" class="btn">View my work</a>
+                    <a href="resume.pdf" class="btn" download target="_blank" rel="noopener">Download résumé</a>
+
+                    <div class="social-links">
+                        <a href="https://github.com/alanlisowski" target="_blank" rel="noopener" aria-label="GitHub profile">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/alan-lisowski-3395b739a/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+                            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://wa.me/message/LHPBYF2HQW4XP1" target="_blank" rel="noopener" aria-label="WhatsApp chat">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        </a>
+                        <a href="mailto:pro4gramista@gmail.com" aria-label="Send email">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="terminal-panel" role="region" aria-label="Interactive portfolio terminal. Type help for commands.">
+                    <div class="terminal-titlebar">
+                        <div class="terminal-dots">
+                            <span class="dot dot-red" aria-hidden="true"></span>
+                            <span class="dot dot-yellow" aria-hidden="true"></span>
+                            <span class="dot dot-green" aria-hidden="true"></span>
+                        </div>
+                        <span class="terminal-title">alan@portfolio:~</span>
+                    </div>
+                    <div class="terminal-output" id="termOutput" role="log" aria-live="polite" aria-atomic="false"></div>
+                    <div class="terminal-input-row">
+                        <span class="terminal-prompt" aria-hidden="true">alan@portfolio:~$&nbsp;</span>
+                        <input
+                            type="text"
+                            class="terminal-input"
+                            id="termInput"
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            aria-label="Terminal command input"
+                        >
+                        <span class="terminal-cursor" aria-hidden="true">▋</span>
+                    </div>
                 </div>
             </div>
         </div>
-
     </section>
     <!-- About Section -->
     <section class="about reveal" id="about">
