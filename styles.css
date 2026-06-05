@@ -1337,6 +1337,12 @@ footer {
     }
 }
 
+@media (max-width: 767px) {
+    .terminal-panel {
+        height: 280px;
+    }
+}
+
 .terminal-titlebar {
     background: #2a2d36;
     padding: 0.6rem 1rem;
@@ -1380,6 +1386,8 @@ footer {
     line-height: 1.6;
     scrollbar-width: thin;
     scrollbar-color: #30363d transparent;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .terminal-output::-webkit-scrollbar {
@@ -1469,4 +1477,22 @@ footer {
 @keyframes term-blink {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
+}
+
+/* ── Konami sparkle dots ─────────────────────────────────────────────────── */
+@keyframes konami-sparkle {
+    0%   { opacity: 0; transform: scale(0); }
+    25%  { opacity: 1; transform: scale(1); }
+    75%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0); }
+}
+
+.konami-dot {
+    position: fixed;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: konami-sparkle 2s ease forwards;
 }

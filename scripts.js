@@ -136,38 +136,36 @@ setTimeout(restorePageStyles, 1000);
 
 // ── Terminal Playground ───────────────────────────────────────────────────
 (function () {
-    const output = document.getElementById('termOutput');
-    const input  = document.getElementById('termInput');
+    const output   = document.getElementById('termOutput');
+    const input    = document.getElementById('termInput');
     if (!output || !input) return;
 
+    const inputRow      = document.querySelector('.terminal-input-row');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile      = window.matchMedia('(max-width: 767px)').matches;
+
+    // ── History (seeded from localStorage) ───────────────────────────────
     const history = [];
-    let histIdx = -1;
+    try {
+        const saved = JSON.parse(localStorage.getItem('cli-history') || '[]');
+        if (Array.isArray(saved)) history.push(...saved.slice(0, 50));
+    } catch (_) {}
+    let histIdx   = -1;
+    let streaming = false;
+    let skipStream = false;
+
+    function saveHistory() {
+        try {
+            localStorage.setItem('cli-history', JSON.stringify(history.slice(0, 50)));
+        } catch (_) {}
+    }
 
     // ── Command registry ──────────────────────────────────────────────────
     const COMMANDS = {
-        help: {
-            description: 'List available commands',
-            handler() {
-                return [
-                    'Available commands:\n',
-                    '  Navigation',
-                    '    about        — short bio',
-                    '    projects     — projects with links',
-                    '    skills       — categorized skill list',
-                    '    education    — education & gap year',
-                    '    certs        — certifications  (alias: certifications)',
-                    '    contact      — contact details (alias: social)',
-                    '    resume       — open résumé PDF (alias: cv)',
-                    '',
-                    '  Terminal',
-                    '    theme        — toggle dark / light mode',
-                    '    clear        — clear this terminal',
-                    '    help         — show this list',
-                ].join('\n');
-            }
-        },
+        // info ────────────────────────────────────────────────────────────
         about: {
             description: 'Short bio',
+            category: 'info',
             handler() {
                 return [
                     "I'm a front-end developer specialising in React and TypeScript,",
@@ -179,8 +177,50 @@ setTimeout(restorePageStyles, 1000);
                 ].join('\n');
             }
         },
+        skills: {
+            description: 'Categorized skill list',
+            category: 'info',
+            handler() {
+                return [
+                    'Languages   JavaScript · TypeScript · Python · HTML · CSS',
+                    'Frameworks  React · Next.js · Tailwind CSS · Node.js',
+                    'Tools       Git · Vite · PostgreSQL · REST APIs',
+                    'Learning    Docker · Testing (Jest/Vitest)',
+                ].join('\n');
+            }
+        },
+        education: {
+            description: 'Education & gap year summary',
+            category: 'info',
+            handler() {
+                return [
+                    '2024–2025  Gap year',
+                    '           Travelling and working across different fields —',
+                    '           broadened perspective, returned ready to build.',
+                    '',
+                    '2018–2024  Zespół Szkół Elektronicznych i Telekomunikacyjnych, Olsztyn',
+                    '           Programming Technician. Courses: Data Structures,',
+                    '           Algorithms, Web Dev, Databases, Pen-testing, IPC, ESD.',
+                ].join('\n');
+            }
+        },
+        certs: {
+            description: 'List certifications',
+            category: 'info',
+            aliases: ['certifications'],
+            handler() {
+                return [
+                    'Certifications:',
+                    '  · Penetration Testing Fundamentals',
+                    '  · IPC Specialist Modules',
+                    '  · ESD Protection Training',
+                ].join('\n');
+            }
+        },
+        // navigation ──────────────────────────────────────────────────────
         projects: {
             description: 'List projects with links',
+            category: 'navigation',
             handler() {
                 const el = document.createElement('span');
                 el.className = 'term-output-block';
@@ -196,45 +236,9 @@ setTimeout(restorePageStyles, 1000);
                 return el;
             }
         },
-        skills: {
-            description: 'Categorized skill list',
-            handler() {
-                return [
-                    'Languages   JavaScript · TypeScript · Python · HTML · CSS',
-                    'Frameworks  React · Next.js · Tailwind CSS · Node.js',
-                    'Tools       Git · Vite · PostgreSQL · REST APIs',
-                    'Learning    Docker · Testing (Jest/Vitest)',
-                ].join('\n');
-            }
-        },
-        education: {
-            description: 'Education & gap year summary',
-            handler() {
-                return [
-                    '2024–2025  Gap year',
-                    '           Travelling and working across different fields —',
-                    '           broadened perspective, returned ready to build.',
-                    '',
-                    '2018–2024  Zespół Szkół Elektronicznych i Telekomunikacyjnych, Olsztyn',
-                    '           Programming Technician. Courses: Data Structures,',
-                    '           Algorithms, Web Dev, Databases, Pen-testing, IPC, ESD.',
-                ].join('\n');
-            }
-        },
-        certs: {
-            description: 'List certifications',
-            aliases: ['certifications'],
-            handler() {
-                return [
-                    'Certifications:',
-                    '  · Penetration Testing Fundamentals',
-                    '  · IPC Specialist Modules',
-                    '  · ESD Protection Training',
-                ].join('\n');
-            }
-        },
         contact: {
             description: 'Contact details',
+            category: 'navigation',
             aliases: ['social'],
             handler() {
                 const el = document.createElement('span');
@@ -250,6 +254,7 @@ setTimeout(restorePageStyles, 1000);
         },
         resume: {
             description: 'Open résumé PDF in new tab',
+            category: 'navigation',
             aliases: ['cv'],
             handler() {
                 window.open('resume.pdf', '_blank', 'noopener,noreferrer');
@@ -258,6 +263,7 @@ setTimeout(restorePageStyles, 1000);
         },
         theme: {
             description: 'Toggle dark / light mode',
+            category: 'navigation',
             handler() {
                 const btn = document.getElementById('themeToggle');
                 if (btn) btn.click();
@@ -267,7 +273,130 @@ setTimeout(restorePageStyles, 1000);
         },
         clear: {
             description: 'Clear the terminal',
+            category: 'navigation',
             handler: null
+        },
+        help: {
+            description: 'List available commands',
+            category: 'navigation',
+            handler(args) {
+                const showAll = args && args.includes('--all');
+                const groups  = showAll ? ['info', 'navigation', 'fun'] : ['info', 'navigation'];
+                const lines   = ['Available commands:', ''];
+                for (const group of groups) {
+                    const cmds = Object.entries(COMMANDS).filter(([, c]) => c.category === group && !c.hidden);
+                    if (!cmds.length) continue;
+                    lines.push('  ' + group[0].toUpperCase() + group.slice(1));
+                    for (const [name, cmd] of cmds) {
+                        const note = cmd.aliases ? '  (alias: ' + cmd.aliases.join(', ') + ')' : '';
+                        lines.push('    ' + name.padEnd(12) + '— ' + cmd.description + note);
+                    }
+                    lines.push('');
+                }
+                if (!showAll) lines.push('(There may be hidden commands. Try things.)');
+                return lines.join('\n');
+            }
+        },
+        // fun (hidden) ────────────────────────────────────────────────────
+        whoami: {
+            description: 'Print current user',
+            category: 'fun',
+            hidden: true,
+            handler() { return 'alan'; }
+        },
+        motorsport: {
+            description: 'Motorsport takes',
+            category: 'fun',
+            hidden: true,
+            handler() { return 'F1 for the strategy.\nWRC for the raw driving.'; }
+        },
+        f1: {
+            description: 'F1 preference',
+            category: 'fun',
+            hidden: true,
+            handler() { return 'Favorite team: <PLACEHOLDER>. Favorite driver: <PLACEHOLDER>.'; }
+        },
+        wrc: {
+            description: 'WRC take',
+            category: 'fun',
+            hidden: true,
+            handler() { return 'Nothing beats Tarmac at night.'; }
+        },
+        coffee: {
+            description: 'Brew a cup',
+            category: 'fun',
+            hidden: true,
+            handler() {
+                return [
+                    '   ( (',
+                    '  .----.',
+                    '  |    |]',
+                    "  `----'",
+                ].join('\n');
+            }
+        },
+        joke: {
+            description: 'Random programming joke',
+            category: 'fun',
+            hidden: true,
+            handler() {
+                const jokes = [
+                    'Why do programmers prefer dark mode? Because light attracts bugs.',
+                    "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
+                    "There are 10 types of people: those who understand binary, and those who don't.",
+                    "Why do Java developers wear glasses? Because they don't C#.",
+                    "I would tell you a UDP joke, but you might not get it.",
+                ];
+                return jokes[Math.floor(Math.random() * jokes.length)];
+            }
+        },
+        ascii: {
+            description: 'Big ASCII name',
+            category: 'fun',
+            hidden: true,
+            handler() {
+                return [
+                    ' █████  ██       █████  ███    ██',
+                    '██   ██ ██      ██   ██ ████   ██',
+                    '███████ ██      ███████ ██ ██  ██',
+                    '██   ██ ██      ██   ██ ██  ██ ██',
+                    '██   ██ ███████ ██   ██ ██   ████',
+                ].join('\n');
+            }
+        },
+        sudo: {
+            description: 'Elevate privileges',
+            category: 'fun',
+            hidden: true,
+            handler() { return 'nice try.'; }
+        },
+        rm: {
+            description: 'Remove files',
+            category: 'fun',
+            hidden: true,
+            handler() { return 'lol no.'; }
+        },
+        exit: {
+            description: 'Exit the terminal',
+            category: 'fun',
+            hidden: true,
+            aliases: ['quit'],
+            handler() { return 'nowhere to go. you\'re already here.'; }
+        },
+        secret: {
+            description: 'Secret',
+            category: 'fun',
+            hidden: true,
+            handler() { return 'try `konami`...'; }
+        },
+        konami: {
+            description: 'Unlock sparkle mode',
+            category: 'fun',
+            hidden: true,
+            handler() {
+                triggerKonami();
+                return reducedMotion ? '✨ unlocked' : '✨';
+            }
         }
     };
 
@@ -296,6 +425,81 @@ setTimeout(restorePageStyles, 1000);
         output.scrollTop = output.scrollHeight;
     }
 
+    // ── Konami sparkle ────────────────────────────────────────────────────
+    function triggerKonami() {
+        if (reducedMotion) return;
+        const colors = ['#ffd700', '#ff6b9d', '#58a6ff', '#4dff91', '#ff9f43'];
+        for (let i = 0; i < 30; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'konami-dot';
+            dot.style.left             = (Math.random() * 100) + 'vw';
+            dot.style.top              = (Math.random() * 100) + 'vh';
+            dot.style.background       = colors[Math.floor(Math.random() * colors.length)];
+            dot.style.animationDelay   = (Math.random() * 0.4).toFixed(2) + 's';
+            document.body.appendChild(dot);
+            setTimeout(() => dot.remove(), 2600);
+        }
+    }
+
+    // ── Typewriter streaming ──────────────────────────────────────────────
+    function streamOutput(text, onDone) {
+        if (reducedMotion) {
+            text.split('\n').forEach(l => appendLine(l));
+            appendLine('');
+            scrollBottom();
+            onDone();
+            return;
+        }
+
+        streaming  = true;
+        skipStream = false;
+        if (inputRow) inputRow.style.visibility = 'hidden';
+
+        const span = document.createElement('span');
+        span.className = 'term-line';
+        span.style.whiteSpace = 'pre-wrap';
+        output.appendChild(span);
+
+        const chars = Array.from(text);
+        let i = 0;
+
+        function tick() {
+            if (skipStream) { span.textContent = text; finalize(); return; }
+            if (i >= chars.length)              { finalize(); return; }
+            span.textContent += chars[i++];
+            scrollBottom();
+            setTimeout(tick, 10);
+        }
+
+        function finalize() {
+            output.appendChild(document.createElement('br'));
+            appendLine('');
+            scrollBottom();
+            streaming  = false;
+            skipStream = false;
+            if (inputRow) inputRow.style.visibility = '';
+            input.focus();
+            onDone();
+        }
+
+        tick();
+    }
+
+    // ── Tab completion ────────────────────────────────────────────────────
+    function doTabComplete() {
+        const val = input.value;
+        if (!val) return;
+        const matches = Object.keys(lookup).filter(n => n.startsWith(val));
+        if (matches.length === 0) {
+            return;
+        } else if (matches.length === 1) {
+            input.value = matches[0];
+        } else {
+            appendLine(matches.join('  '));
+            scrollBottom();
+        }
+    }
+
     // ── Welcome message ───────────────────────────────────────────────────
     appendLine("Welcome to Alan's portfolio.");
     appendLine("Type `help` to see what's available.");
@@ -304,40 +508,53 @@ setTimeout(restorePageStyles, 1000);
 
     // ── Execute a command ─────────────────────────────────────────────────
     function runCommand(raw) {
-        const cmd = raw.trim().toLowerCase();
-        if (!cmd) return;
+        const trimmed = raw.trim();
+        if (!trimmed) return;
 
         history.unshift(raw);
+        if (history.length > 50) history.length = 50;
         histIdx = -1;
+        saveHistory();
 
         appendLine('alan@portfolio:~$ ' + raw, 'term-cmd');
 
-        if (cmd === 'clear') {
+        const parts   = trimmed.toLowerCase().split(/\s+/);
+        const cmdName = parts[0];
+        const args    = parts.slice(1);
+
+        if (cmdName === 'clear') {
             output.innerHTML = '';
             return;
         }
 
-        const key = lookup[cmd];
+        const key = lookup[cmdName];
         if (!key) {
-            appendLine('command not found: ' + cmd + '. Try `help`.', 'term-error');
+            appendLine('command not found: ' + cmdName + '. Try `help`.', 'term-error');
             scrollBottom();
             return;
         }
 
-        const result = COMMANDS[key].handler();
+        const result = COMMANDS[key].handler(args);
         if (result instanceof HTMLElement) {
             appendEl(result);
+            appendLine('');
+            scrollBottom();
         } else if (typeof result === 'string') {
-            result.split('\n').forEach(l => appendLine(l));
+            streamOutput(result, () => {});
         }
-
-        appendLine('');
-        scrollBottom();
     }
 
     // ── Keyboard handling ─────────────────────────────────────────────────
     input.addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
+        if (streaming) {
+            skipStream = true;
+            e.preventDefault();
+            return;
+        }
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            doTabComplete();
+        } else if (e.key === 'Enter') {
             const val = input.value;
             input.value = '';
             runCommand(val);
@@ -357,6 +574,21 @@ setTimeout(restorePageStyles, 1000);
         }
     });
 
+    // ── Konami sequence (global) ──────────────────────────────────────────
+    const KONAMI_SEQ = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let konamiIdx = 0;
+    document.addEventListener('keydown', e => {
+        if (e.key === KONAMI_SEQ[konamiIdx]) {
+            konamiIdx++;
+            if (konamiIdx === KONAMI_SEQ.length) {
+                konamiIdx = 0;
+                triggerKonami();
+            }
+        } else {
+            konamiIdx = e.key === KONAMI_SEQ[0] ? 1 : 0;
+        }
+    });
+
     // ── Click inside terminal → focus input ───────────────────────────────
     document.querySelector('.terminal-panel').addEventListener('click', () => {
         input.focus();
@@ -368,8 +600,8 @@ setTimeout(restorePageStyles, 1000);
         if (panel && !panel.contains(e.target)) input.blur();
     });
 
-    // ── Auto-focus on desktop (pointer device, wide screen) ───────────────
-    if (window.matchMedia('(min-width: 1024px) and (hover: hover)').matches) {
+    // ── Auto-focus on desktop only ────────────────────────────────────────
+    if (!isMobile && window.matchMedia('(min-width: 1024px) and (hover: hover)').matches) {
         input.focus();
     }
 })();
