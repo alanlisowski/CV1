@@ -70,57 +70,28 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <a href="#about" class="skip-terminal">Skip terminal</a>
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <h1><span style="color: var(--primary);">Alan Lisowski</span></h1>
-                    <h2>Front-end developer building React &amp; TypeScript apps</h2>
-                    <p style="font-size:14px;opacity:0.65;margin-bottom:1.25rem">→ or explore via the terminal</p>
-                    <p>Programming-technician graduate from Olsztyn, Poland. Ready for my first full-time role — open to remote, hybrid, or relocation.</p>
-                    <a href="#projects" class="btn">View my work</a>
-                    <a href="resume.pdf" class="btn" download target="_blank" rel="noopener">Download résumé</a>
+            <div class="hero-content">
+                <h1><span style="color: var(--primary);">Alan Lisowski</span></h1>
+                <h2>Front-end developer building React &amp; TypeScript apps</h2>
+                <p>Programming-technician graduate from Olsztyn, Poland. Ready for my first full-time role — open to remote, hybrid, or relocation.</p>
+                <a href="#projects" class="btn">View my work</a>
+                <a href="resume.pdf" class="btn" download target="_blank" rel="noopener">Download résumé</a>
 
-                    <div class="social-links">
-                        <a href="https://github.com/alanlisowski" target="_blank" rel="noopener" aria-label="GitHub profile">
-                            <i class="fab fa-github" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/alan-lisowski-3395b739a/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
-                            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://wa.me/message/LHPBYF2HQW4XP1" target="_blank" rel="noopener" aria-label="WhatsApp chat">
-                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                        </a>
-                        <a href="mailto:pro4gramista@gmail.com" aria-label="Send email">
-                            <i class="fas fa-envelope" aria-hidden="true"></i>
-                        </a>
-                    </div>
+                <div class="social-links">
+                    <a href="https://github.com/alanlisowski" target="_blank" rel="noopener" aria-label="GitHub profile">
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/alan-lisowski-3395b739a/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://wa.me/message/LHPBYF2HQW4XP1" target="_blank" rel="noopener" aria-label="WhatsApp chat">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    </a>
+                    <a href="mailto:pro4gramista@gmail.com" aria-label="Send email">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                    </a>
                 </div>
-
-                <div class="terminal-panel" role="region" aria-label="Interactive portfolio terminal. Type help for commands.">
-                    <div class="terminal-titlebar">
-                        <div class="terminal-dots">
-                            <span class="dot dot-red" aria-hidden="true"></span>
-                            <span class="dot dot-yellow" aria-hidden="true"></span>
-                            <span class="dot dot-green" aria-hidden="true"></span>
-                        </div>
-                        <span class="terminal-title">alan@portfolio:~</span>
-                    </div>
-                    <div class="terminal-output" id="termOutput" role="log" aria-live="polite" aria-atomic="false"></div>
-                    <div class="terminal-input-row">
-                        <span class="terminal-prompt" aria-hidden="true">alan@portfolio:~$&nbsp;</span>
-                        <input
-                            type="text"
-                            class="terminal-input"
-                            id="termInput"
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            aria-label="Terminal command input"
-                        >
-                        <span class="terminal-cursor" aria-hidden="true">▋</span>
-                    </div>
-                </div>
+                <p class="term-hint" id="termHint">Press ⌘K to explore as a terminal — or click the icon bottom-right.</p>
             </div>
         </div>
     </section>
@@ -516,9 +487,45 @@
             <p class="copyright">&copy; 2025 Alan Lisowski. All rights reserved.</p>
         </div>
     </footer>
-    <script src="scripts.js"></script>
+    <!-- Floating terminal button -->
+    <button class="term-fab" id="termBtn" aria-label="Open command terminal" data-tooltip="Open terminal (⌘K)">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <polyline points="4 8 8 11 4 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="11" y1="14" x2="17" y2="14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+    </button>
 
-    
-    
+    <!-- Terminal modal -->
+    <div class="term-modal" id="termModal" role="dialog" aria-modal="true" aria-label="Interactive terminal">
+        <div class="term-modal-box">
+            <div class="terminal-panel" role="region" aria-label="Interactive portfolio terminal. Type help for commands.">
+                <div class="terminal-titlebar">
+                    <div class="terminal-dots">
+                        <button class="dot dot-red term-close" aria-label="Close terminal"></button>
+                        <span class="dot dot-yellow" aria-hidden="true"></span>
+                        <span class="dot dot-green" aria-hidden="true"></span>
+                    </div>
+                    <span class="terminal-title">alan@portfolio:~</span>
+                </div>
+                <div class="terminal-output" id="termOutput" role="log" aria-live="polite" aria-atomic="false"></div>
+                <div class="terminal-input-row">
+                    <span class="terminal-prompt" aria-hidden="true">alan@portfolio:~$&nbsp;</span>
+                    <input
+                        type="text"
+                        class="terminal-input"
+                        id="termInput"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        aria-label="Terminal command input"
+                    >
+                    <span class="terminal-cursor" aria-hidden="true">▋</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
 </body>
 </html>

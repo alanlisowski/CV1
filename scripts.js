@@ -142,7 +142,6 @@ setTimeout(restorePageStyles, 1000);
 
     const inputRow      = document.querySelector('.terminal-input-row');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile      = window.matchMedia('(max-width: 767px)').matches;
 
     // ── History (seeded from localStorage) ───────────────────────────────
     const history = [];
@@ -594,14 +593,58 @@ setTimeout(restorePageStyles, 1000);
         input.focus();
     });
 
-    // ── Click outside terminal → release focus ────────────────────────────
-    document.addEventListener('click', e => {
-        const panel = document.querySelector('.terminal-panel');
-        if (panel && !panel.contains(e.target)) input.blur();
-    });
+    // ── Terminal modal controls ───────────────────────────────────────────
+    const termModal = document.getElementById('termModal');
+    const termBtn   = document.getElementById('termBtn');
 
-    // ── Auto-focus on desktop only ────────────────────────────────────────
-    if (!isMobile && window.matchMedia('(min-width: 1024px) and (hover: hover)').matches) {
+    function openTerminal() {
+        if (!termModal) return;
+        termModal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
         input.focus();
+        if (termBtn && termBtn.classList.contains('pulsing')) {
+            termBtn.classList.remove('pulsing');
+            try { localStorage.setItem('terminal-discovered', '1'); } catch (_) {}
+        }
     }
+
+    function closeTerminal() {
+        if (!termModal) return;
+        termModal.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    if (termBtn) {
+        try {
+            if (!localStorage.getItem('terminal-discovered')) termBtn.classList.add('pulsing');
+        } catch (_) {}
+        termBtn.addEventListener('click', openTerminal);
+    }
+
+    const termClose = document.querySelector('.term-close');
+    if (termClose) termClose.addEventListener('click', closeTerminal);
+
+    if (termModal) {
+        termModal.addEventListener('click', e => {
+            if (e.target === termModal) closeTerminal();
+        });
+    }
+
+    // Platform hint & tooltip
+    const isMac    = /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+    const shortcut = isMac ? '⌘K' : 'Ctrl+K';
+    const termHint = document.getElementById('termHint');
+    if (termHint) termHint.textContent = `Press ${shortcut} to explore as a terminal — or click the icon bottom-right.`;
+    if (termBtn)  termBtn.dataset.tooltip = `Open terminal (${shortcut})`;
+
+    // Keyboard: Cmd/Ctrl+K toggles, Esc closes
+    document.addEventListener('keydown', e => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            termModal && termModal.classList.contains('is-open') ? closeTerminal() : openTerminal();
+        } else if (e.key === 'Escape' && termModal && termModal.classList.contains('is-open')) {
+            e.preventDefault();
+            closeTerminal();
+        }
+    });
 })();
