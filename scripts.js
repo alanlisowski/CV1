@@ -238,7 +238,7 @@ handleHash();
             category: 'info',
             handler() {
                 return [
-                    "I'm a front-end developer specialising in React and TypeScript,",
+                    "I work across the full stack — React, Node.js, and PostgreSQL —",
                     "with a programming-technician background and hands-on experience",
                     "from an internship at Intelly and freelance client work.",
                     '',
