@@ -134,6 +134,77 @@ function restorePageStyles() {
 // Run after translation
 setTimeout(restorePageStyles, 1000);
 
+// ── Easter eggs ───────────────────────────────────────────────────────────
+
+// 1. Console hello
+(function () {
+    const c = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#4d7cff';
+    console.log(
+        '%c👋 Hey there. Try ⌘K (or Ctrl+K) to open the terminal.\n   Then type `play` for a quick trivia about me.',
+        `color: ${c}; font-weight: bold; font-size: 14px;`
+    );
+})();
+
+// 2. Hash-route banners (#f1, #wrc)
+function showHashBanner(text, bgColor) {
+    const old = document.querySelector('.hash-banner');
+    if (old) old.remove();
+    const el = document.createElement('div');
+    el.className    = 'hash-banner';
+    el.textContent  = text;
+    el.style.background = bgColor;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3100);
+}
+
+function handleHash() {
+    const hash = location.hash;
+    if (hash === '#f1') {
+        const c = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#4d7cff';
+        showHashBanner('🏎️ Williams forever.', c);
+        history.replaceState(null, '', location.pathname + location.search);
+    } else if (hash === '#wrc') {
+        showHashBanner('🌲 Rally Poland 2024.', '#2d5016');
+        history.replaceState(null, '', location.pathname + location.search);
+    }
+}
+
+window.addEventListener('hashchange', handleHash);
+handleHash();
+
+// 3. Portrait click reveal
+(function () {
+    const portrait = document.querySelector('.about-image img');
+    if (!portrait) return;
+    // TODO: drop Aipfp-candid.webp at the project root for the click-5 reveal
+    const originalSrc = portrait.getAttribute('src');
+    const candidSrc   = 'Aipfp-candid.webp';
+    let clickCount      = 0;
+    let inactivityTimer = null;
+
+    function crossFade(newSrc) {
+        portrait.style.transition = 'opacity 300ms ease';
+        portrait.style.opacity    = '0';
+        setTimeout(() => {
+            portrait.src           = newSrc;
+            portrait.style.opacity = '1';
+        }, 300);
+    }
+
+    portrait.addEventListener('click', () => {
+        clickCount++;
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => { clickCount = 0; }, 10000);
+        if (clickCount === 5) {
+            crossFade(candidSrc);
+        } else if (clickCount === 6) {
+            crossFade(originalSrc);
+            clickCount = 0;
+            clearTimeout(inactivityTimer);
+        }
+    });
+})();
+
 // ── Terminal Playground ───────────────────────────────────────────────────
 (function () {
     const output   = document.getElementById('termOutput');
@@ -216,6 +287,39 @@ setTimeout(restorePageStyles, 1000);
                 ].join('\n');
             }
         },
+        f1: {
+            description: 'F1 take',
+            category: 'info',
+            handler() {
+                return [
+                    'Team: Williams.',
+                    'Driver: Max Verstappen.',
+                    "Yes, those are two different things. Don't @ me.",
+                ].join('\n');
+            }
+        },
+        wrc: {
+            description: 'WRC take',
+            category: 'info',
+            handler() { return 'Rally Poland 2024. Closest to feeling the speed without driving it.'; }
+        },
+        coffee: {
+            description: 'Coffee preference',
+            category: 'info',
+            handler() { return 'Double espresso. Twice a day, minimum.'; }
+        },
+        playlist: {
+            description: 'What I code to',
+            category: 'info',
+            aliases: ['music'],
+            handler() { return 'House. Steady BPM, no distractions.'; }
+        },
+        polska: {
+            description: 'Home',
+            category: 'info',
+            aliases: ['poland', 'olsztyn', 'home'],
+            handler() { return "Olsztyn, Poland. Ask anyone what the football team is called — most won't know."; }
+        },
         // navigation ──────────────────────────────────────────────────────
         projects: {
             description: 'List projects with links',
@@ -283,7 +387,7 @@ setTimeout(restorePageStyles, 1000);
                 const groups  = showAll ? ['info', 'navigation', 'fun'] : ['info', 'navigation'];
                 const lines   = ['Available commands:', ''];
                 for (const group of groups) {
-                    const cmds = Object.entries(COMMANDS).filter(([, c]) => c.category === group && !c.hidden);
+                    const cmds = Object.entries(COMMANDS).filter(([, c]) => c.category === group && (!c.hidden || showAll));
                     if (!cmds.length) continue;
                     lines.push('  ' + group[0].toUpperCase() + group.slice(1));
                     for (const [name, cmd] of cmds) {
@@ -296,43 +400,73 @@ setTimeout(restorePageStyles, 1000);
                 return lines.join('\n');
             }
         },
+        play: {
+            description: 'Trivia quiz about me',
+            category: 'navigation',
+            aliases: ['trivia', 'quiz'],
+            handler(args) {
+                if (args && args.includes('--reset')) {
+                    try {
+                        localStorage.removeItem('trivia-stage');
+                        localStorage.removeItem('trivia-complete');
+                    } catch (_) {}
+                    triviaStage         = 0;
+                    triviaWrongAttempts = 0;
+                    triviaResumePending = false;
+                    triviaActive        = true;
+                    appendLine('Trivia time. Type your answer, `skip` to skip, `quit` to exit.');
+                    triviaShowQuestion();
+                    return;
+                }
+                let savedStage = 0;
+                try { savedStage = parseInt(localStorage.getItem('trivia-stage') || '0', 10); } catch (_) {}
+                if (savedStage > 0 && savedStage <= TRIVIA_STAGES.length) {
+                    triviaStage         = savedStage - 1;
+                    triviaWrongAttempts = 0;
+                    triviaResumePending = true;
+                    triviaActive        = true;
+                    appendLine('You were on question ' + savedStage + '. Resume? [y/n]');
+                    scrollBottom();
+                    return;
+                }
+                triviaStage         = 0;
+                triviaWrongAttempts = 0;
+                triviaResumePending = false;
+                triviaActive        = true;
+                appendLine('Trivia time. Type your answer, `skip` to skip, `quit` to exit.');
+                triviaShowQuestion();
+            }
+        },
         // fun (hidden) ────────────────────────────────────────────────────
         whoami: {
             description: 'Print current user',
             category: 'fun',
             hidden: true,
-            handler() { return 'alan'; }
+            handler() { return 'alan @ olsztyn.pl'; }
+        },
+        pwd: {
+            description: 'Print working directory',
+            category: 'fun',
+            hidden: true,
+            handler() { return '/home/alan/portfolio'; }
+        },
+        ls: {
+            description: 'List commands',
+            category: 'fun',
+            hidden: true,
+            handler(args) { return COMMANDS.help.handler(args); }
+        },
+        vim: {
+            description: 'Open text editor',
+            category: 'fun',
+            hidden: true,
+            handler() { return "the answer is :wq, but you'll be stuck for 10 minutes first."; }
         },
         motorsport: {
             description: 'Motorsport takes',
             category: 'fun',
             hidden: true,
             handler() { return 'F1 for the strategy.\nWRC for the raw driving.'; }
-        },
-        f1: {
-            description: 'F1 preference',
-            category: 'fun',
-            hidden: true,
-            handler() { return 'Favorite team: <PLACEHOLDER>. Favorite driver: <PLACEHOLDER>.'; }
-        },
-        wrc: {
-            description: 'WRC take',
-            category: 'fun',
-            hidden: true,
-            handler() { return 'Nothing beats Tarmac at night.'; }
-        },
-        coffee: {
-            description: 'Brew a cup',
-            category: 'fun',
-            hidden: true,
-            handler() {
-                return [
-                    '   ( (',
-                    '  .----.',
-                    '  |    |]',
-                    "  `----'",
-                ].join('\n');
-            }
         },
         joke: {
             description: 'Random programming joke',
@@ -426,15 +560,18 @@ setTimeout(restorePageStyles, 1000);
 
     // ── Konami sparkle ────────────────────────────────────────────────────
     function triggerKonami() {
-        if (reducedMotion) return;
-        const colors = ['#ffd700', '#ff6b9d', '#58a6ff', '#4dff91', '#ff9f43'];
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#4d7cff';
+        if (reducedMotion) {
+            showHashBanner('✨ Konami unlocked', primaryColor);
+            return;
+        }
         for (let i = 0; i < 30; i++) {
             const dot = document.createElement('div');
             dot.className = 'konami-dot';
-            dot.style.left             = (Math.random() * 100) + 'vw';
-            dot.style.top              = (Math.random() * 100) + 'vh';
-            dot.style.background       = colors[Math.floor(Math.random() * colors.length)];
-            dot.style.animationDelay   = (Math.random() * 0.4).toFixed(2) + 's';
+            dot.style.left           = (Math.random() * 100) + 'vw';
+            dot.style.top            = (Math.random() * 100) + 'vh';
+            dot.style.background     = primaryColor;
+            dot.style.animationDelay = (Math.random() * 0.4).toFixed(2) + 's';
             document.body.appendChild(dot);
             setTimeout(() => dot.remove(), 2600);
         }
@@ -505,6 +642,152 @@ setTimeout(restorePageStyles, 1000);
     appendLine('');
     scrollBottom();
 
+    // ── Trivia state machine ──────────────────────────────────────────────────
+    const TRIVIA_STAGES = [
+        {
+            question: "What's my favorite F1 team?",
+            accepted: ['williams'],
+            hintOnWrong: 'Their logo is blue. They were dominant in the 90s — Mansell, Hill, Villeneuve.',
+            reward: 'Williams. The grit gets me, even on bad weekends.'
+        },
+        {
+            question: "Now — who's my favorite driver?",
+            accepted: ['max verstappen', 'max', 'verstappen'],
+            hintOnWrong: 'Youngest F1 race winner ever. Drives in orange.',
+            reward: "Max Verstappen. Different team than my favorite. Yes I know. Don't @ me."
+        },
+        {
+            question: 'What year was Rally Poland last a WRC round?',
+            accepted: ['2024'],
+            hintOnWrong: 'Same year as the last US presidential election. After a 7-year gap.',
+            reward: "2024. Watched every stage. The return I'd been waiting for."
+        },
+        {
+            question: 'How do I take my coffee?',
+            accepted: ['double espresso', 'espresso', 'double'],
+            hintOnWrong: 'Same shot, twice over. No milk, no sugar.',
+            reward: 'Double espresso. Twice a day, minimum.'
+        },
+        {
+            question: 'What plays in my headphones while I code?',
+            accepted: ['house'],
+            hintOnWrong: 'Born in Chicago in the 80s. Four-on-the-floor.',
+            reward: 'House. Steady BPM, no distractions.'
+        },
+        {
+            question: 'What language got me started?',
+            accepted: ['html'],
+            hintOnWrong: "Three letters. Technically not a programming language. It's where I drew my first <div>.",
+            reward: 'HTML. The first <div> I ever wrote felt like magic.'
+        },
+        {
+            question: "Last one — what's the football team of Olsztyn called?",
+            accepted: ['stomil', 'stomil olsztyn'],
+            hintOnWrong: 'Starts with S. Named after a Polish rubber and tire factory.',
+            reward: 'Stomil Olsztyn. The hometown side.'
+        }
+    ];
+
+    const TROPHY = [
+        '       ___________',
+        "      '._==_==_=_.'",
+        '      .-\\:      /-.',
+        '     | (|:.     |) |',
+        "      '-|:.     |-'",
+        '        \\::.    /',
+        "         '::. .'",
+        '           ) (',
+        "         _.' '._",
+        '        `"""""""`'
+    ].join('\n');
+
+    let triviaActive        = false;
+    let triviaStage         = 0;
+    let triviaWrongAttempts = 0;
+    let triviaResumePending = false;
+
+    function triviaShowQuestion() {
+        const stage = TRIVIA_STAGES[triviaStage];
+        appendLine('');
+        appendLine('[' + (triviaStage + 1) + '/' + TRIVIA_STAGES.length + '] ' + stage.question);
+        scrollBottom();
+    }
+
+    function triviaAdvance() {
+        triviaStage++;
+        triviaWrongAttempts = 0;
+        if (triviaStage >= TRIVIA_STAGES.length) {
+            triviaActive = false;
+            try {
+                localStorage.setItem('trivia-complete', '1');
+                localStorage.removeItem('trivia-stage');
+            } catch (_) {}
+            streamOutput(TROPHY, () => {
+                appendLine('When life gets tough remember u da goat :)');
+                appendLine('');
+                appendLine('Trivia complete. Type `play --reset` to play again.');
+                scrollBottom();
+            });
+            return;
+        }
+        try { localStorage.setItem('trivia-stage', String(triviaStage + 1)); } catch (_) {}
+        triviaShowQuestion();
+    }
+
+    function triviaHandleInput(raw) {
+        const val = raw.trim().toLowerCase();
+
+        if (triviaResumePending) {
+            triviaResumePending = false;
+            if (val === 'y') {
+                triviaShowQuestion();
+            } else {
+                try { localStorage.removeItem('trivia-stage'); } catch (_) {}
+                triviaStage         = 0;
+                triviaWrongAttempts = 0;
+                appendLine('Trivia time. Type your answer, `skip` to skip, `quit` to exit.');
+                triviaShowQuestion();
+            }
+            return;
+        }
+
+        if (val === 'quit') {
+            triviaActive = false;
+            appendLine('Trivia closed. Type `play` to resume.');
+            scrollBottom();
+            return;
+        }
+
+        const stage = TRIVIA_STAGES[triviaStage];
+
+        if (val === 'skip') {
+            appendLine('(skipped) Answer was: ' + stage.accepted[0]);
+            appendLine('');
+            triviaAdvance();
+            return;
+        }
+
+        const match = stage.accepted.some(a => a === val);
+
+        if (match) {
+            triviaWrongAttempts = 0;
+            streamOutput('✓ ' + stage.reward, () => {
+                appendLine('');
+                triviaAdvance();
+            });
+        } else {
+            triviaWrongAttempts++;
+            if (triviaWrongAttempts === 1) {
+                appendLine('✗ ' + stage.hintOnWrong);
+            } else if (triviaWrongAttempts >= 3) {
+                appendLine('✗ Type `skip` to move on.');
+            } else {
+                appendLine('✗ Try again.');
+            }
+            scrollBottom();
+        }
+    }
+
     // ── Execute a command ─────────────────────────────────────────────────
     function runCommand(raw) {
         const trimmed = raw.trim();
@@ -516,6 +799,11 @@ setTimeout(restorePageStyles, 1000);
         saveHistory();
 
         appendLine('alan@portfolio:~$ ' + raw, 'term-cmd');
+
+        if (triviaActive) {
+            triviaHandleInput(trimmed);
+            return;
+        }
 
         const parts   = trimmed.toLowerCase().split(/\s+/);
         const cmdName = parts[0];
@@ -597,15 +885,26 @@ setTimeout(restorePageStyles, 1000);
     const termModal = document.getElementById('termModal');
     const termBtn   = document.getElementById('termBtn');
 
+    const isMac    = /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+    const shortcut = isMac ? '⌘K' : 'Ctrl+K';
+
+    function discoverTerminal() {
+        if (!termBtn) return;
+        let alreadyKnown = false;
+        try { alreadyKnown = !!localStorage.getItem('terminal-discovered'); } catch (_) {}
+        if (alreadyKnown) return;
+        try { localStorage.setItem('terminal-discovered', '1'); } catch (_) {}
+        termBtn.classList.remove('is-pill');
+        termBtn.classList.add('is-collapsed');
+        termBtn.dataset.tooltip = `Open terminal (${shortcut})`;
+    }
+
     function openTerminal() {
         if (!termModal) return;
         termModal.classList.add('is-open');
         document.body.style.overflow = 'hidden';
         input.focus();
-        if (termBtn && termBtn.classList.contains('pulsing')) {
-            termBtn.classList.remove('pulsing');
-            try { localStorage.setItem('terminal-discovered', '1'); } catch (_) {}
-        }
+        discoverTerminal();
     }
 
     function closeTerminal() {
@@ -614,10 +913,20 @@ setTimeout(restorePageStyles, 1000);
         document.body.style.overflow = '';
     }
 
+    // Initialize FAB state
     if (termBtn) {
-        try {
-            if (!localStorage.getItem('terminal-discovered')) termBtn.classList.add('pulsing');
-        } catch (_) {}
+        let discovered = false;
+        try { discovered = !!localStorage.getItem('terminal-discovered'); } catch (_) {}
+
+        if (discovered) {
+            termBtn.classList.add('is-collapsed');
+            termBtn.dataset.tooltip = `Open terminal (${shortcut})`;
+        } else {
+            const fabText = termBtn.querySelector('.fab-text');
+            if (fabText) fabText.textContent = `Press ${shortcut} to explore`;
+            setTimeout(() => termBtn.classList.add('is-pill'), 1500);
+        }
+
         termBtn.addEventListener('click', openTerminal);
     }
 
@@ -630,12 +939,9 @@ setTimeout(restorePageStyles, 1000);
         });
     }
 
-    // Platform hint & tooltip
-    const isMac    = /Mac|iPhone|iPad|iPod/.test(navigator.platform);
-    const shortcut = isMac ? '⌘K' : 'Ctrl+K';
+    // Hero hint
     const termHint = document.getElementById('termHint');
     if (termHint) termHint.textContent = `Press ${shortcut} to explore as a terminal — or click the icon bottom-right.`;
-    if (termBtn)  termBtn.dataset.tooltip = `Open terminal (${shortcut})`;
 
     // Keyboard: Cmd/Ctrl+K toggles, Esc closes
     document.addEventListener('keydown', e => {

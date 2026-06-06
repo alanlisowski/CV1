@@ -535,7 +535,13 @@ nav {
     object-fit: cover;
     object-position: center 15%;
     box-shadow: var(--img-shadow);
+    cursor: pointer;
+    transition: scale 200ms ease;
     animation: float 3s ease-in-out infinite;
+}
+
+.about-image img:hover {
+    scale: 1.02;
 }
 
 /* Education Section */
@@ -1438,28 +1444,79 @@ footer {
 
 .term-fab {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: 28px;
+    right: 28px;
     z-index: 50;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary);
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    color: #fff;
+    background: var(--primary);
     box-shadow: 0 4px 20px rgba(41, 98, 255, 0.4);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    /* invisible until JS assigns a state class */
+    opacity: 0;
+    pointer-events: none;
 }
 
-.term-fab:hover {
+/* ── Pill state (first-visit) ── */
+.term-fab.is-pill {
+    width: 210px;
+    height: 56px;
+    border-radius: 9999px;
+    padding: 0 16px;
+    pointer-events: auto;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    animation: fab-entrance 400ms ease-out both,
+               pill-ring   2s    ease-out 400ms infinite;
+}
+
+.term-fab.is-pill:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 28px rgba(41, 98, 255, 0.55);
+}
+
+/* expanding ring via ::after */
+.term-fab.is-pill::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 9999px;
+    border: 2px solid var(--primary);
+    pointer-events: none;
+    animation: pill-ring 2s ease-out 400ms infinite;
+}
+
+@keyframes fab-entrance {
+    from { translate: 0 20px; opacity: 0; }
+    to   { translate: 0 0;    opacity: 1; }
+}
+
+@keyframes pill-ring {
+    0%   { transform: scale(1);    opacity: 0.35; }
+    100% { transform: scale(1.14); opacity: 0; }
+}
+
+/* ── Collapsed icon state (after first interaction) ── */
+.term-fab.is-collapsed {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    opacity: 1;
+    pointer-events: auto;
+    transition: width 200ms ease-out, height 200ms ease-out,
+                border-radius 200ms ease-out,
+                transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.term-fab.is-collapsed:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 28px rgba(41, 98, 255, 0.55);
 }
 
-.term-fab::after {
+.term-fab.is-collapsed::after {
     content: attr(data-tooltip);
     position: absolute;
     right: calc(100% + 10px);
@@ -1477,25 +1534,43 @@ footer {
     transition: opacity 0.15s ease;
 }
 
-.term-fab:hover::after {
+.term-fab.is-collapsed:hover::after {
     opacity: 1;
 }
 
 @media (max-width: 480px) {
-    .term-fab::after { display: none; }
+    .term-fab.is-collapsed::after { display: none; }
 }
 
-.term-fab.pulsing {
-    animation: fab-pulse 2s ease-in-out infinite;
+/* ── FAB text label ── */
+.fab-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 150ms ease-out;
 }
 
-@keyframes fab-pulse {
-    0%, 100% {
-        box-shadow: 0 4px 20px rgba(41, 98, 255, 0.4), 0 0 0 0 rgba(41, 98, 255, 0.35);
+.term-fab.is-collapsed .fab-text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ── Mobile: pill centered, limited width ── */
+@media (max-width: 767px) {
+    .term-fab.is-pill {
+        width: min(210px, 80vw);
+        left: 50%;
+        right: auto;
+        bottom: 20px;
+        animation: fab-entrance-mobile 400ms ease-out both,
+                   pill-ring           2s    ease-out 400ms infinite;
     }
-    60% {
-        box-shadow: 0 4px 20px rgba(41, 98, 255, 0.4), 0 0 0 12px rgba(41, 98, 255, 0);
-    }
+}
+
+@keyframes fab-entrance-mobile {
+    from { translate: -50% 20px; opacity: 0; }
+    to   { translate: -50%  0;   opacity: 1; }
 }
 
 /* ── Terminal modal ──────────────────────────────────────────────────────── */
@@ -1571,6 +1646,30 @@ button.dot-red:hover {
     height: 7px;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 100;
     animation: konami-sparkle 2s ease forwards;
+}
+
+/* ── Hash-route & Konami banners ─────────────────────────────────────────── */
+
+.hash-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    pointer-events: none;
+    animation: hash-banner-slide 3s ease forwards;
+}
+
+@keyframes hash-banner-slide {
+    0%  { transform: translateY(-100%); opacity: 0; }
+    10% { transform: translateY(0);     opacity: 1; }
+    80% { transform: translateY(0);     opacity: 1; }
+    100%{ transform: translateY(-100%); opacity: 0; }
 }
