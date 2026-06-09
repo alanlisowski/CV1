@@ -178,9 +178,11 @@ handleHash();
     if (!portrait) return;
     // TODO: drop Aipfp-candid.webp at the project root for the click-5 reveal
     const originalSrc = portrait.getAttribute('src');
-    const candidSrc   = 'Aipfp-candid.webp';
-    let clickCount      = 0;
+    const candidSrc   = 'bambus.jpg';
+    let portraitClicks  = 0;
+    let isRevealed      = false;
     let inactivityTimer = null;
+    let displayTimer    = null;
 
     function crossFade(newSrc) {
         portrait.style.transition = 'opacity 300ms ease';
@@ -192,15 +194,19 @@ handleHash();
     }
 
     portrait.addEventListener('click', () => {
-        clickCount++;
+        if (isRevealed) return;
+        portraitClicks++;
         clearTimeout(inactivityTimer);
-        inactivityTimer = setTimeout(() => { clickCount = 0; }, 10000);
-        if (clickCount === 5) {
-            crossFade(candidSrc);
-        } else if (clickCount === 6) {
-            crossFade(originalSrc);
-            clickCount = 0;
+        inactivityTimer = setTimeout(() => { portraitClicks = 0; }, 10000);
+        if (portraitClicks === 5) {
+            isRevealed = true;
             clearTimeout(inactivityTimer);
+            crossFade(candidSrc);
+            displayTimer = setTimeout(() => {
+                crossFade(originalSrc);
+                portraitClicks = 0;
+                isRevealed     = false;
+            }, 5000);
         }
     });
 })();
