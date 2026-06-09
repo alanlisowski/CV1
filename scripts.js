@@ -329,12 +329,12 @@ handleHash();
                 el.className = 'term-output-block';
                 el.innerHTML =
                     '<strong style="color:#c9d1d9">Projects:</strong>\n\n' +
+                    '  Wardrobe AI  (React Native · TypeScript · Hono · Python · Claude API)\n' +
+                    '  → <a href="https://github.com/alanlisowski/wardrobe-app" target="_blank" rel="noopener">github.com/alanlisowski/wardrobe-app</a>\n\n' +
                     '  E-commerce Website  (React · Node.js · PostgreSQL)\n' +
                     '  → <a href="https://github.com/alanlisowski/exodus-store" target="_blank" rel="noopener">github.com/alanlisowski/exodus-store</a>\n\n' +
                     '  Task Management App  (React · Tailwind · Vite)\n' +
                     '  → <a href="https://github.com/alanlisowski/Task-manager" target="_blank" rel="noopener">github.com/alanlisowski/Task-manager</a>\n\n' +
-                    '  Weather Dashboard  (JS · CSS · OpenWeatherMap API)\n' +
-                    '  → <a href="https://github.com/alanlisowski/Weather-app" target="_blank" rel="noopener">github.com/alanlisowski/Weather-app</a>\n\n' +
                     '  More → <a href="https://github.com/alanlisowski" target="_blank" rel="noopener">github.com/alanlisowski</a>';
                 return el;
             }
