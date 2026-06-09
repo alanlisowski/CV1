@@ -780,6 +780,19 @@ nav {
     transform: scale(1.1);
 }
 
+.project-card--mobile .project-image {
+    background: linear-gradient(135deg, #1a1f2e 0%, #2962ff 100%);
+    padding: 16px 0;
+}
+
+.project-card--mobile .project-image img {
+    object-fit: contain;
+    height: 100%;
+    width: auto;
+    margin: 0 auto;
+    display: block;
+}
+
 .project-content {
     padding: 1.5rem;
 }
