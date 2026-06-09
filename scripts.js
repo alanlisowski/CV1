@@ -287,39 +287,6 @@ handleHash();
                 ].join('\n');
             }
         },
-        f1: {
-            description: 'F1 take',
-            category: 'info',
-            handler() {
-                return [
-                    'Team: Williams.',
-                    'Driver: Max Verstappen.',
-                    "Yes, those are two different things. Don't @ me.",
-                ].join('\n');
-            }
-        },
-        wrc: {
-            description: 'WRC take',
-            category: 'info',
-            handler() { return 'Rally Poland 2024. Closest to feeling the speed without driving it.'; }
-        },
-        coffee: {
-            description: 'Coffee preference',
-            category: 'info',
-            handler() { return 'Double espresso. Twice a day, minimum.'; }
-        },
-        playlist: {
-            description: 'What I code to',
-            category: 'info',
-            aliases: ['music'],
-            handler() { return 'House. Steady BPM, no distractions.'; }
-        },
-        polska: {
-            description: 'Home',
-            category: 'info',
-            aliases: ['poland', 'olsztyn', 'home'],
-            handler() { return "Olsztyn, Poland. Ask anyone what the football team is called — most won't know."; }
-        },
         // navigation ──────────────────────────────────────────────────────
         projects: {
             description: 'List projects with links',
