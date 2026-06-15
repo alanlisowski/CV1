@@ -302,12 +302,12 @@ handleHash();
                 el.className = 'term-output-block';
                 el.innerHTML =
                     '<strong style="color:#c9d1d9">Projects:</strong>\n\n' +
+                    '  PitWall — F1 Race Strategy Simulator  (Python · FastAPI · React · TypeScript · Vite · SQLite)\n' +
+                    '  → <a href="https://github.com/alanlisowski/pitwall" target="_blank" rel="noopener">github.com/alanlisowski/pitwall</a>  |  <a href="https://pitwall-mu-five.vercel.app/" target="_blank" rel="noopener">Live demo</a>\n\n' +
                     '  Wardrobe AI  (React Native · TypeScript · Hono · Python · Claude API)\n' +
                     '  → <a href="https://github.com/alanlisowski/wardrobe-app" target="_blank" rel="noopener">github.com/alanlisowski/wardrobe-app</a>\n\n' +
                     '  E-commerce Website  (React · Node.js · PostgreSQL)\n' +
                     '  → <a href="https://github.com/alanlisowski/exodus-store" target="_blank" rel="noopener">github.com/alanlisowski/exodus-store</a>\n\n' +
-                    '  Task Management App  (React · Tailwind · Vite)\n' +
-                    '  → <a href="https://github.com/alanlisowski/Task-manager" target="_blank" rel="noopener">github.com/alanlisowski/Task-manager</a>\n\n' +
                     '  More → <a href="https://github.com/alanlisowski" target="_blank" rel="noopener">github.com/alanlisowski</a>';
                 return el;
             }

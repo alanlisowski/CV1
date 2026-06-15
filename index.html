@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alan Lisowski — Full-stack Developer Portfolio</title>
-    <meta name="description" content="React, Node.js, and PostgreSQL developer from Poland. Portfolio, projects, and résumé.">
+    <meta name="description" content="React, Node.js, Python, and PostgreSQL developer from Poland. Portfolio, projects, and résumé.">
     <meta name="keywords" content="react, typescript, front-end, portfolio, junior developer, poland">
     <link rel="canonical" href="https://cv-beryl-nine-32.vercel.app/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Alan Lisowski — Full-stack Developer Portfolio">
-    <meta property="og:description" content="React, Node.js, and PostgreSQL developer from Poland. Portfolio, projects, and résumé.">
+    <meta property="og:description" content="React, Node.js, Python, and PostgreSQL developer from Poland. Portfolio, projects, and résumé.">
     <meta property="og:image" content="https://cv-beryl-nine-32.vercel.app/og-image.png">
     <meta property="og:url" content="https://cv-beryl-nine-32.vercel.app/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Alan Lisowski — Full-stack Developer Portfolio">
-    <meta name="twitter:description" content="React, Node.js, and PostgreSQL developer from Poland. Portfolio, projects, and résumé.">
+    <meta name="twitter:description" content="React, Node.js, Python, and PostgreSQL developer from Poland. Portfolio, projects, and résumé.">
     <meta name="twitter:image" content="https://cv-beryl-nine-32.vercel.app/og-image.png">
 
     <!-- Favicons -->
@@ -141,8 +141,10 @@
                                 <span class="skill-tag">React Native (Expo)</span>
                                 <span class="skill-tag">Next.js</span>
                                 <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">FastAPI</span>
                                 <span class="skill-tag">Hono</span>
                                 <span class="skill-tag">Tailwind CSS</span>
+                                <span class="skill-tag">Vite</span>
                             </div>
                         </div>
                         <div class="skill-group">
@@ -151,6 +153,8 @@
                                 <span class="skill-tag">Git</span>
                                 <span class="skill-tag">Docker</span>
                                 <span class="skill-tag">PostgreSQL + pgvector</span>
+                                <span class="skill-tag">SQLite</span>
+                                <span class="skill-tag">Pydantic</span>
                                 <span class="skill-tag">Drizzle ORM</span>
                                 <span class="skill-tag">BullMQ</span>
                                 <span class="skill-tag">Stripe</span>
@@ -160,7 +164,7 @@
                         <div class="skill-group">
                             <span class="skill-group-label">Learning</span>
                             <div class="skill-tags reveal-stagger">
-                                <span class="skill-tag learning">Testing (Vitest)</span>
+                                <span class="skill-tag learning">Testing (Vitest, pytest)</span>
                                 <span class="skill-tag learning">CI/CD</span>
                                 <span class="skill-tag learning">Observability</span>
                             </div>
@@ -281,6 +285,47 @@
             </div>
             
             <div class="projects-grid reveal-stagger">
+                <div class="project-card">
+                    <div class="project-image">
+                        <a href="https://pitwall-mu-five.vercel.app/" target="_blank" rel="noopener">
+                            <picture>
+                                <!-- TODO: drop pitwall.png screenshot in project root (suggested: the Race Engineer Mode screen — timing tower + track map; or the strategy editor with stint timeline) -->
+                                <img src="pitwall.png" alt="PitWall F1 Race Strategy Simulator screenshot" loading="lazy" decoding="async" width="1910" height="913">
+                            </picture>
+                        </a>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">PitWall — F1 Race Strategy Simulator</h3>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">Vite</span>
+                            <span class="tech-tag">SQLite</span>
+                            <span class="tech-tag">Pydantic</span>
+                            <span class="tech-tag">Recharts</span>
+                        </div>
+                        <dl class="project-desc">
+                            <div><dt>Problem</dt><dd>F1 strategy is invisible. You see a pit on lap 27 and wonder — was it too early? Would lap 32 have triggered an undercut?</dd></div>
+                            <div><dt>Built</dt><dd>Python engine with a five-component lap-time model + non-linear tyre cliff and reactive rule-based AI rivals. Calibrated against the 2024 Hungarian GP. Strategy editor lets you drag pit-stop markers and re-simulate the field in under a second; Race Engineer Mode runs lap-by-lap live with broadcast UI (timing tower, track map, pit HUD).</dd></div>
+                            <div><dt>Stack</dt><dd>Python · FastAPI · Pydantic · SQLite · FastF1 · React · TypeScript · Vite · Recharts · Vercel · Render</dd></div>
+                            <div><dt>Status</dt><dd>Live demo deployed (frontend on Vercel, API on Render)</dd></div>
+                        </dl>
+                        <div class="project-links">
+                            <a href="https://github.com/alanlisowski/pitwall" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                            <a href="https://pitwall-mu-five.vercel.app/" target="_blank" rel="noopener">
+                                <i class="fas fa-external-link-alt"></i> Live demo
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=jHMH_78jw44" target="_blank" rel="noopener" class="btn-demo">
+                                <i class="fas fa-play"></i> Watch demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="project-card project-card--mobile">
                     <div class="project-image">
                         <a href="#" target="_blank" rel="noopener">
@@ -348,34 +393,6 @@
                     </div>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-image">
-                        <a href="#" target="_blank" rel="noopener"><!-- TODO: Vercel demo URL -->
-                            <picture>
-                                <source srcset="task.webp 1x, task.webp 2x" type="image/webp">
-                                <img src="task.webp" alt="Task Management App screenshot" loading="lazy" decoding="async" width="1918" height="916">
-                            </picture>
-                        </a>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Task Management App</h3>
-                        <div class="project-tech">
-                            <span class="tech-tag">React</span>
-                            <span class="tech-tag">Tailwind</span>
-                            <span class="tech-tag">Vite</span>
-                        </div>
-                        <dl class="project-desc">
-                            <div><dt>Problem</dt><dd>To-do apps either hide complexity or drown you in it.</dd></div>
-                            <div><dt>Built</dt><dd>Drag-and-drop kanban board with optimistic updates and local persistence. React + Tailwind + Vite.</dd></div>
-                        </dl>
-                        <div class="project-links">
-                            <a href="https://github.com/alanlisowski/Task-manager" target="_blank" rel="noopener">
-                                <i class="fab fa-github"></i> Code
-                            </a>
-                            <!-- TODO: replace with "Watch demo" button once screen recording is uploaded -->
-                        </div>
-                    </div>
-                </div>
 
             </div>
 
