@@ -287,9 +287,12 @@ handleHash();
             handler() {
                 return [
                     'Certifications:',
-                    '  · Penetration Testing Fundamentals',
-                    '  · IPC Specialist Modules',
-                    '  · ESD Protection Training',
+                    '  · IPC SPACE — Electronics Assembly & Repair  (2022)',
+                    '  · Penetration Testing Fundamentals  (2022)',
+                    '  · ESD Protection — Static Electricity in Computer Repair  (2022)',
+                    '  · BGA Diagnostics & Repair  (2023)',
+                    '',
+                    '  All certs: ZSEiT Olsztyn × MCDZ Włocławek · EU-funded vocational training programme',
                 ].join('\n');
             }
         },
