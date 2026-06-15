@@ -340,7 +340,7 @@ nav {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background: radial-gradient(circle at 75% 50%, rgba(41, 98, 255, 0.10), transparent 65%), var(--hero-gradient), url('tlo.webp');
+    background: radial-gradient(circle at 75% 50%, rgba(41, 98, 255, 0.10), transparent 65%), var(--hero-gradient), url('assets/backgrounds/tlo.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -681,7 +681,8 @@ nav {
 
 .cert-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
     gap: 1.5rem;
     max-width: 900px;
     margin: 0 auto;
@@ -694,11 +695,12 @@ nav {
     box-shadow: var(--card-shadow);
     border-left: 4px solid var(--primary);
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .cert-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--card-shadow-hover);
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.25);
 }
 
 .cert-card h3 {
@@ -728,6 +730,53 @@ nav {
     border-radius: 50px;
     font-size: 0.78rem;
     font-weight: 600;
+}
+
+.cert-view-hint {
+    font-size: 0.8rem;
+    color: var(--primary);
+    margin-top: 0.75rem;
+}
+
+/* Cert lightbox */
+#cert-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+}
+
+#cert-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+#cert-modal-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+#cert-modal-close {
+    position: fixed;
+    top: 1rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
 }
 
 /* Projects Section */
@@ -1211,6 +1260,10 @@ footer {
     .about-image {
         order: -1;
         margin-bottom: 2rem;
+    }
+
+    .cert-grid {
+        grid-template-columns: 1fr;
     }
 }
 

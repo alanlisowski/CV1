@@ -173,7 +173,7 @@
                 </div>
                 
                 <div class="about-image">
-                    <img src="cigani.jpg" alt="Alan Lisowski profile photo" width="320" height="320">
+                    <img src="assets/portraits/cigani.jpg" alt="Alan Lisowski profile photo" width="320" height="320">
                 </div>
             </div>
         </div>
@@ -252,34 +252,54 @@
                 <p>Industry training &amp; qualifications</p>
             </div>
             <div class="cert-grid reveal-stagger">
-                <div class="cert-card">
+                <div class="cert-card"
+                     role="button" tabindex="0"
+                     aria-label="View certificate: Penetration Testing Fundamentals"
+                     data-cert-img="assets/certs/cert-pentest.jpg"
+                     data-cert-title="Penetration Testing Fundamentals">
                     <h3>Penetration Testing Fundamentals</h3>
                     <div class="cert-meta">
                         <span class="cert-issuer">ZSEiT Olsztyn × MCDZ Włocławek</span>
                         <span class="cert-year">2022</span>
                     </div>
+                    <p class="cert-view-hint">Click to view certificate →</p>
                 </div>
-                <div class="cert-card">
+                <div class="cert-card"
+                     role="button" tabindex="0"
+                     aria-label="View certificate: IPC SPACE — Electronics Assembly &amp; Repair"
+                     data-cert-img="assets/certs/cert-ipc.jpg"
+                     data-cert-title="IPC SPACE — Electronics Assembly &amp; Repair">
                     <h3>IPC SPACE — Electronics Assembly &amp; Repair</h3>
                     <div class="cert-meta">
                         <span class="cert-issuer">ZSEiT Olsztyn × MCDZ Włocławek</span>
                         <span class="cert-year">2022</span>
                     </div>
+                    <p class="cert-view-hint">Click to view certificate →</p>
                 </div>
-                <div class="cert-card">
+                <div class="cert-card"
+                     role="button" tabindex="0"
+                     aria-label="View certificate: ESD Protection — Static Electricity in Computer Repair"
+                     data-cert-img="assets/certs/cert-esd.jpg"
+                     data-cert-title="ESD Protection — Static Electricity in Computer Repair">
                     <h3>ESD Protection — Static Electricity in Computer Repair</h3>
                     <div class="cert-meta">
                         <span class="cert-issuer">ZSEiT Olsztyn × MCDZ Włocławek</span>
                         <span class="cert-year">2022</span>
                     </div>
+                    <p class="cert-view-hint">Click to view certificate →</p>
                 </div>
-                <div class="cert-card">
+                <div class="cert-card"
+                     role="button" tabindex="0"
+                     aria-label="View certificate: BGA Diagnostics &amp; Repair"
+                     data-cert-img="assets/certs/cert-bga.jpg"
+                     data-cert-title="BGA Diagnostics &amp; Repair">
                     <h3>BGA Diagnostics &amp; Repair</h3>
                     <div class="cert-meta">
                         <span class="cert-issuer">ZSEiT Olsztyn × MCDZ Włocławek</span>
                         <span class="cert-year">2023</span>
                     </div>
                     <p class="cert-issuer">PC + peripheral device fault diagnostics with focus on Ball Grid Array (BGA) components.</p>
+                    <p class="cert-view-hint">Click to view certificate →</p>
                 </div>
             </div>
         </div>
@@ -297,8 +317,8 @@
                     <div class="project-image">
                         <a href="https://pitwall-mu-five.vercel.app/" target="_blank" rel="noopener">
                             <picture>
-                                <!-- TODO: drop pitwall.png screenshot in project root (suggested: the Race Engineer Mode screen — timing tower + track map; or the strategy editor with stint timeline) -->
-                                <img src="pitwall.png" alt="PitWall F1 Race Strategy Simulator screenshot" loading="lazy" decoding="async" width="1910" height="913">
+                                <!-- TODO: drop pitwall.png into assets/projects/ (suggested: the Race Engineer Mode screen — timing tower + track map; or the strategy editor with stint timeline) -->
+                                <img src="assets/projects/pitwall.png" alt="PitWall F1 Race Strategy Simulator screenshot" loading="lazy" decoding="async" width="1910" height="913">
                             </picture>
                         </a>
                     </div>
@@ -339,7 +359,7 @@
                         <a href="#" target="_blank" rel="noopener">
                             <picture>
                                 <!-- TODO: replace with single clean hero screenshot, ideally the Suggest outfit card -->
-                                <img src="wardrobe_sh.png" alt="Wardrobe AI screenshot" loading="lazy" decoding="async" width="1910" height="913">
+                                <img src="assets/projects/wardrobe_sh.png" alt="Wardrobe AI screenshot" loading="lazy" decoding="async" width="1910" height="913">
                             </picture>
                         </a>
                     </div>
@@ -376,8 +396,8 @@
                         <a href="#" target="_blank" rel="noopener"><!-- TODO: Vercel demo URL -->
                             <picture>
                                 <!-- TODO: swap to a top-of-page hero screenshot rather than mid-scroll -->
-                                <source srcset="e-commerce.webp 1x, e-commerce.webp 2x" type="image/webp">
-                                <img src="e-commerce.webp" alt="E-commerce Website screenshot" loading="lazy" decoding="async" width="1910" height="913">
+                                <source srcset="assets/projects/e-commerce.webp 1x, assets/projects/e-commerce.webp 2x" type="image/webp">
+                                <img src="assets/projects/e-commerce.webp" alt="E-commerce Website screenshot" loading="lazy" decoding="async" width="1910" height="913">
                             </picture>
                         </a>
                     </div>
@@ -557,6 +577,14 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Cert lightbox -->
+    <div id="cert-modal" role="dialog" aria-modal="true" aria-label="Certificate viewer">
+        <button id="cert-modal-close" aria-label="Close certificate">&#x2715;</button>
+        <!-- image src set from data-cert-img on each card:
+             assets/certs/cert-pentest.jpg · assets/certs/cert-ipc.jpg · assets/certs/cert-esd.jpg · assets/certs/cert-bga.jpg -->
+        <img id="cert-modal-img" src="" alt="">
     </div>
 
     <script src="scripts.js"></script>

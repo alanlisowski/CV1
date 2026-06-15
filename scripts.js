@@ -178,7 +178,7 @@ handleHash();
     if (!portrait) return;
     // TODO: drop Aipfp-candid.webp at the project root for the click-5 reveal
     const originalSrc = portrait.getAttribute('src');
-    const candidSrc   = 'bambus.jpg';
+    const candidSrc   = 'assets/portraits/bambus.jpg';
     let portraitClicks  = 0;
     let isRevealed      = false;
     let inactivityTimer = null;
@@ -928,5 +928,43 @@ handleHash();
             e.preventDefault();
             closeTerminal();
         }
+    });
+})();
+
+// ── Cert lightbox ─────────────────────────────────────────────────────────
+(function () {
+    const modal    = document.getElementById('cert-modal');
+    const img      = document.getElementById('cert-modal-img');
+    const closeBtn = document.getElementById('cert-modal-close');
+    if (!modal) return;
+
+    let lastFocus = null;
+
+    function openModal(card) {
+        lastFocus = card;
+        img.src = card.dataset.certImg;
+        img.alt = card.dataset.certTitle;
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    }
+
+    function closeModal() {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+        if (lastFocus) lastFocus.focus();
+    }
+
+    document.querySelectorAll('.cert-card').forEach(card => {
+        card.addEventListener('click', () => openModal(card));
+        card.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card); }
+        });
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
     });
 })();
