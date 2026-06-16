@@ -538,7 +538,7 @@ nav {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
-    object-position: center 15%;
+    object-position: 50% 25%;
     box-shadow: var(--img-shadow);
     cursor: pointer;
     transition: scale 200ms ease;
@@ -1355,6 +1355,10 @@ footer {
 
     .timeline-dot {
         left: 2rem;
+    }
+
+    .about-image img {
+        max-width: 200px;
     }
 }
 
