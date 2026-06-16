@@ -204,6 +204,10 @@ section {
     padding: 5rem 0;
 }
 
+section[id] {
+    scroll-margin-top: 80px;
+}
+
 .section-title {
     margin-bottom: 3rem;
     text-align: center;
@@ -1382,6 +1386,15 @@ footer {
 
     .timeline-toggle {
         display: none;
+    }
+
+    .cert-card {
+        padding: 16px;
+    }
+
+    .cert-card h3 {
+        font-size: 1.05rem;
+        line-height: 1.3;
     }
 }
 
