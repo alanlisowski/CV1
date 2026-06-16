@@ -171,6 +171,11 @@ body {
     box-sizing: border-box;
 }
 
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -1378,6 +1383,7 @@ footer {
 /* ── Terminal Playground ─────────────────────────────────────────────────── */
 
 .terminal-panel {
+    position: relative;
     width: 100%;
     background: #1a1f2e;
     border-radius: 8px;
@@ -1389,6 +1395,36 @@ footer {
     font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
     font-size: 0.82rem;
     text-align: left;
+}
+
+.terminal-close-x {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    border-radius: 6px;
+    z-index: 10;
+}
+
+.terminal-close-x:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.terminal-close-hint {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: right;
+    padding: 6px 12px 4px;
+    font-family: inherit;
 }
 
 .terminal-titlebar {

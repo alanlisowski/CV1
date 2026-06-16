@@ -906,8 +906,7 @@ handleHash();
         termBtn.addEventListener('click', openTerminal);
     }
 
-    const termClose = document.querySelector('.term-close');
-    if (termClose) termClose.addEventListener('click', closeTerminal);
+    document.querySelectorAll('.term-close').forEach(el => el.addEventListener('click', closeTerminal));
 
     if (termModal) {
         termModal.addEventListener('click', e => {

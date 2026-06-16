@@ -560,6 +560,12 @@
                     </div>
                     <span class="terminal-title">alan@portfolio:~</span>
                 </div>
+                <button class="terminal-close-x term-close" aria-label="Close terminal" type="button">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                        <line x1="6" y1="18" x2="18" y2="6"/>
+                    </svg>
+                </button>
                 <div class="terminal-output" id="termOutput" role="log" aria-live="polite" aria-atomic="false"></div>
                 <div class="terminal-input-row">
                     <span class="terminal-prompt" aria-hidden="true">alan@portfolio:~$&nbsp;</span>
@@ -575,6 +581,7 @@
                     >
                     <span class="terminal-cursor" aria-hidden="true">▋</span>
                 </div>
+                <div class="terminal-close-hint">Press Esc or tap × to close</div>
             </div>
         </div>
     </div>
