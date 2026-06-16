@@ -998,11 +998,12 @@ nav {
 /* Contact Section */
 .contact {
     background: var(--light);
+    overflow-x: hidden;
 }
 
 .contact-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
     gap: 2.5rem;
     align-items: start;
 }
@@ -1395,6 +1396,17 @@ footer {
     .cert-card h3 {
         font-size: 1.05rem;
         line-height: 1.3;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px 24px;
+        font-size: 0.9rem;
+    }
+
+    .footer-links li {
+        margin: 0;
     }
 }
 

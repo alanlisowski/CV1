@@ -1,3 +1,5 @@
+document.querySelector('.copyright-year').textContent = new Date().getFullYear();
+
 // Theme toggle
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = document.getElementById('themeIcon');
