@@ -1655,13 +1655,24 @@ footer {
 
 /* ── Mobile: pill centered, limited width ── */
 @media (max-width: 767px) {
+    .term-fab {
+        right: 16px;
+        bottom: 24px;
+    }
+
     .term-fab.is-pill {
         width: min(210px, 80vw);
+        max-width: calc(100vw - 32px);
         left: 50%;
         right: auto;
-        bottom: 20px;
+        bottom: 24px;
         animation: fab-entrance-mobile 400ms ease-out both,
                    pill-ring           2s    ease-out 400ms infinite;
+    }
+
+    .term-fab.is-collapsed {
+        width: 56px;
+        height: 56px;
     }
 }
 
