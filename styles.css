@@ -622,6 +622,12 @@ nav {
     color: var(--gray);
 }
 
+.school-name {
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
 .timeline-dot {
     position: absolute;
     top: 2rem;
@@ -1359,6 +1365,23 @@ footer {
 
     .about-image img {
         max-width: 200px;
+    }
+
+    .timeline-content {
+        padding: 20px;
+    }
+
+    .timeline-collapse {
+        max-height: none;
+        overflow: visible;
+    }
+
+    .timeline-collapse::after {
+        display: none;
+    }
+
+    .timeline-toggle {
+        display: none;
     }
 }
 
