@@ -917,7 +917,11 @@ handleHash();
 
     // Hero hint
     const termHint = document.getElementById('termHint');
-    if (termHint) termHint.textContent = `Press ${shortcut} to explore as a terminal — or click the icon bottom-right.`;
+    if (termHint) {
+        termHint.textContent = window.matchMedia('(max-width: 767px)').matches
+            ? 'Tap the terminal icon below to explore'
+            : `Press ${shortcut} to explore as a terminal — or click the icon bottom-right.`;
+    }
 
     // Keyboard: Cmd/Ctrl+K toggles, Esc closes
     document.addEventListener('keydown', e => {

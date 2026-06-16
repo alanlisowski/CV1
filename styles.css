@@ -1304,6 +1304,36 @@ footer {
         margin: 0 auto;
     }
 
+    .hero h1 {
+        font-size: clamp(2.2rem, 9vw, 3rem);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+
+    .hero h2 {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .hero .btn {
+        display: block;
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    .hero .btn + .btn {
+        margin-top: 12px;
+    }
+
     .social-links {
         justify-content: center;
     }
