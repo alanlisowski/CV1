@@ -1384,6 +1384,7 @@ footer {
 
 .terminal-panel {
     position: relative;
+    z-index: 2001;
     width: 100%;
     background: #1a1f2e;
     border-radius: 8px;
@@ -1411,7 +1412,7 @@ footer {
     color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     border-radius: 6px;
-    z-index: 10;
+    z-index: 2002;
 }
 
 .terminal-close-x:hover {
@@ -1722,7 +1723,7 @@ footer {
 .term-modal {
     position: fixed;
     inset: 0;
-    z-index: 100;
+    z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1763,6 +1764,10 @@ footer {
         width: 92%;
         height: 88vh;
     }
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 /* Red-dot close button reset */
